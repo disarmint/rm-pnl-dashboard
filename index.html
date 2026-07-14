@@ -1,0 +1,314 @@
+<!DOCTYPE html><html lang="ru"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>P&L · RM GROUP — 2025</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+:root{
+  --bg:#f6f8fb;--surface:#ffffff;--surface-soft:#f9fafb;
+  --border:#e9edf3;--border-strong:#dde3ec;
+  --text:#0f172a;--muted:#64748b;--muted-2:#94a3b8;
+  --blue:#2563eb;--purple:#7c3aed;--green:#16a34a;--red:#dc2626;--amber:#f59e0b;--cyan:#0891b2;
+  --shadow:0 18px 45px rgba(15,23,42,.07);--shadow-soft:0 6px 20px rgba(15,23,42,.045);
+}
+body.dark{
+  --bg:#0f1419;--surface:#1a2230;--surface-soft:#222d3d;
+  --border:#2a3647;--border-strong:#374459;
+  --text:#e6edf3;--muted:#8b98a5;--muted-2:#6b7785;
+  --shadow:0 18px 45px rgba(0,0,0,.4);--shadow-soft:0 6px 20px rgba(0,0,0,.25);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;padding:28px 28px 48px;max-width:1400px;margin:0 auto;-webkit-font-smoothing:antialiased;letter-spacing:-.01em;transition:background .25s,color .25s}
+.hero{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:16px;margin-bottom:24px}
+.hero h1{font-size:30px;font-weight:720;letter-spacing:-.03em}
+.hero .sub{color:var(--muted);font-size:13.5px;margin-top:6px;line-height:1.5;max-width:680px}
+.hright{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.pill{display:inline-flex;align-items:center;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--muted);box-shadow:var(--shadow-soft)}
+.pill .dot{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
+.btn{background:var(--surface);border:1px solid var(--border);border-radius:999px;padding:7px 14px;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;box-shadow:var(--shadow-soft);transition:all .15s}
+.btn:hover{color:var(--text);border-color:var(--border-strong)}
+/* Tabs */
+.tabs{display:flex;gap:6px;margin-bottom:20px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:0}
+.tab{background:none;border:none;padding:10px 16px;font-size:14px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .15s}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--blue);border-bottom-color:var(--blue)}
+.tab-pane{display:none}
+.tab-pane.active{display:block;animation:fade .25s}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+/* KPI */
+.grid{display:grid;gap:14px}
+.kpis-primary{grid-template-columns:repeat(3,1fr);margin-bottom:14px}
+.kpis-secondary{grid-template-columns:repeat(4,1fr);margin-bottom:22px}
+.exp-kpis{grid-template-columns:repeat(4,1fr);margin-bottom:22px}
+.kpis-primary .kpi{padding:20px 22px}
+.kpis-primary .kpi .v{font-size:27px}
+@media(max-width:920px){.kpis-primary,.kpis-secondary,.exp-kpis{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.kpis-primary,.kpis-secondary,.exp-kpis{grid-template-columns:1fr}}
+.kpi{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:18px 20px;box-shadow:var(--shadow-soft);transition:transform .15s,box-shadow .15s}
+.kpi:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
+.kpi.primary{background:radial-gradient(circle at top right,rgba(37,99,235,.08),transparent 42%),var(--surface)}
+.ktop{display:flex;align-items:flex-start;justify-content:space-between;gap:8px}
+.kpi .l{font-size:11px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);font-weight:600}
+.kpi .v{font-size:25px;font-weight:720;margin:7px 0 4px;letter-spacing:-.02em}
+.kpi .d{font-size:11.5px;color:var(--muted-2)}
+.trend{font-size:11px;font-weight:700;padding:2px 7px;border-radius:999px;white-space:nowrap}
+.trend.up{color:var(--green);background:rgba(22,163,74,.12)}
+.trend.down{color:var(--red);background:rgba(220,38,38,.12)}
+.spark{width:100%;height:28px;margin-top:6px;display:block}
+.tone-blue{color:var(--blue)}.tone-green{color:var(--green)}.tone-red{color:var(--red)}.tone-amber{color:var(--amber)}.tone-slate{color:var(--text)}.tone-purple{color:var(--purple)}
+.section-title{font-size:16px;font-weight:700;letter-spacing:-.02em;margin:4px 0 14px;color:var(--text)}
+.row{display:grid;gap:16px;margin-bottom:16px}.row-2{grid-template-columns:1fr 1fr}
+@media(max-width:920px){.row-2{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:20px;padding:22px;box-shadow:var(--shadow-soft)}
+.card h2{font-size:14.5px;font-weight:650;letter-spacing:-.01em;margin-bottom:16px;color:var(--text)}
+.chart{position:relative;height:300px}
+.donut-card{margin-bottom:16px}.donut-card h2{text-align:center;font-size:16px;font-weight:700}
+.donut-row{display:flex;gap:36px;align-items:flex-start;justify-content:center;flex-wrap:wrap;margin-top:6px}
+.donut-col{width:330px;flex:0 0 330px;text-align:center}
+.donut-col .chart{height:330px;width:330px;margin:0 auto}
+.donut-cap{margin-top:12px;font-size:13px;color:var(--muted);font-weight:600}.donut-cap.red{color:var(--red)}
+table{width:100%;border-collapse:collapse;font-size:12.5px}
+th,td{text-align:right;padding:9px 10px;border-bottom:1px solid var(--border)}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--muted);font-weight:600;font-size:10.5px;text-transform:uppercase;letter-spacing:.04em;background:var(--surface-soft)}
+tr.tot{font-weight:700;background:var(--surface-soft)}
+tr.net td{color:var(--green);font-weight:700}
+tbody tr:hover{background:var(--surface-soft)}
+.insights{font-size:14px;line-height:1.85;color:var(--muted)}.insights b{color:var(--text)}
+.insights .row-item{display:flex;gap:11px;padding:7px 0}.insights .row-item .ic{color:var(--blue);font-weight:700;margin-top:1px}
+.foot{color:var(--muted-2);font-size:11.5px;margin-top:32px;text-align:center}
+@media print{.tabs,.hright .btn,.hright .pill{display:none}.tab-pane{display:block!important}.card{box-shadow:none;break-inside:avoid}body{padding:0;max-width:none}}
+</style></head><body>
+<div class="hero">
+<div>
+<h1>P&L · RM GROUP</h1>
+<div class="sub">Управленческий отчёт о прибылях и убытках · Янв–Сен 2025 · источник: 1С-экспорт «Бухгалтерия» (ОПУ месяц, ДДС месяц, ОПЕРАЦИИ, ОСВ Поставщики)</div>
+</div>
+<div class="hright">
+<div class="pill"><span class="dot"></span>Сверено с ДДС</div>
+<button class="btn" id="printBtn">⤓ PDF</button>
+<button class="btn" id="themeToggle">🌙 Тёмная</button>
+</div>
+</div>
+
+<nav class="tabs">
+<button class="tab active" data-tab="overview">Обзор</button>
+<button class="tab" data-tab="cashflow">Денежные потоки</button>
+<button class="tab" data-tab="suppliers">Поставщики</button>
+<button class="tab" data-tab="sales">Продажи</button>
+<button class="tab" data-tab="detail">Детально</button>
+<button class="tab" data-tab="insights">Выводы</button>
+</nav>
+
+<section class="tab-pane active" id="overview">
+<div class="grid kpis-primary"><div class="kpi primary"><div class="ktop"><div class="l">Валовый доход</div><span class="trend down">▼ -87%</span></div><div class="v tone-blue">58 341 525 ₽</div><div class="d">за 9 месяцев</div><svg class="spark" viewBox="0 0 100 28" preserveAspectRatio="none"><polyline points="0.0,18.3 12.5,14.7 25.0,11.7 37.5,8.4 50.0,6.7 62.5,4.0 75.0,2.0 87.5,8.7 100.0,26.0" fill="none" stroke="#2563eb" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+<div class="kpi primary"><div class="ktop"><div class="l">Расходы (опер.)</div><span class="trend down">▼ -85%</span></div><div class="v tone-red">37 886 772 ₽</div><div class="d">вывод прибыли · ОПУ</div><svg class="spark" viewBox="0 0 100 28" preserveAspectRatio="none"><polyline points="0.0,26.0 12.5,26.0 25.0,26.0 37.5,20.5 50.0,6.2 62.5,3.8 75.0,2.0 87.5,8.0 100.0,23.4" fill="none" stroke="#dc2626" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+<div class="kpi primary"><div class="ktop"><div class="l">Чистая прибыль</div><span class="trend up">▲ +8835%</span></div><div class="v tone-green">20 454 753 ₽</div><div class="d">нетто-маржа 35.06%</div><svg class="spark" viewBox="0 0 100 28" preserveAspectRatio="none"><polyline points="0.0,11.1 12.5,6.2 25.0,2.0 37.5,5.8 50.0,25.6 62.5,25.6 75.0,25.6 87.5,25.6 100.0,26.0" fill="none" stroke="#16a34a" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+</div>
+<div class="grid kpis-secondary"><div class="kpi"><div class="ktop"><div class="l">Выручка за услуги</div><span class="trend down">▼ -87%</span></div><div class="v tone-slate">35 177 343 ₽</div><div class="d">основная + логистика</div><svg class="spark" viewBox="0 0 100 28" preserveAspectRatio="none"><polyline points="0.0,16.9 12.5,15.9 25.0,13.5 37.5,10.2 50.0,7.8 62.5,4.0 75.0,2.0 87.5,8.7 100.0,26.0" fill="none" stroke="#64748b" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+<div class="kpi"><div class="ktop"><div class="l">Прибыль с продаж</div><span class="trend down">▼ -85%</span></div><div class="v tone-amber">23 120 782 ₽</div><div class="d">торговая маржа</div><svg class="spark" viewBox="0 0 100 28" preserveAspectRatio="none"><polyline points="0.0,20.5 12.5,12.9 25.0,9.0 37.5,5.5 50.0,4.8 62.5,4.1 75.0,2.0 87.5,8.6 100.0,26.0" fill="none" stroke="#f59e0b" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+<div class="kpi"><div class="ktop"><div class="l">Вывод прибыли</div><span class="trend down">▼ -85%</span></div><div class="v tone-slate">37 886 772 ₽</div><div class="d">изъятие прибыли</div><svg class="spark" viewBox="0 0 100 28" preserveAspectRatio="none"><polyline points="0.0,26.0 12.5,26.0 25.0,26.0 37.5,20.5 50.0,6.2 62.5,3.8 75.0,2.0 87.5,8.0 100.0,23.4" fill="none" stroke="#64748b" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+<div class="kpi"><div class="ktop"><div class="l">Остаток ДС</div><span class="trend down">▼ -192%</span></div><div class="v tone-red">-2 894 126 ₽</div><div class="d">сальдо на конец</div><svg class="spark" viewBox="0 0 100 28" preserveAspectRatio="none"><polyline points="0.0,23.2 12.5,23.2 25.0,23.2 37.5,23.0 50.0,2.0 62.5,14.8 75.0,10.9 87.5,20.9 100.0,26.0" fill="none" stroke="#dc2626" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
+</div>
+<div class="section-title">Расходы</div>
+<div class="grid kpis-secondary exp-kpis"><div class="kpi primary"><div class="l">Расходы всего</div><div class="v tone-red">3 981 717 160 ₽</div><div class="d">за янв–сен 2025</div></div>
+<div class="kpi"><div class="l">Закупка товара</div><div class="v tone-blue">3 294 874 172 ₽</div><div class="d">82.8% расходов</div></div>
+<div class="kpi"><div class="l">Вывод с баланса</div><div class="v tone-blue">648 956 216 ₽</div><div class="d">16.3% расходов</div></div>
+<div class="kpi"><div class="l">Вывод прибыли</div><div class="v tone-blue">37 886 772 ₽</div><div class="d">1.0% расходов</div></div>
+</div>
+<div class="section-title">Финансовое здоровье</div>
+<div class="grid kpis-secondary"><div class="kpi"><div class="l">Кредиторка поставщикам</div><div class="v tone-red">6.98 млрд ₽</div><div class="d">596 поставщиков · топ-10 = 65.2%</div></div>
+<div class="kpi"><div class="l">Оборотный капитал</div><div class="v tone-red">−6.98 млрд ₽</div><div class="d">ДС минус кредиторка</div></div>
+<div class="kpi"><div class="l">Run-rate прибыли</div><div class="v tone-green">27.3 млн ₽/год</div><div class="d">годовая проекция</div></div>
+<div class="kpi"><div class="l">Коэфф. вывода прибыли</div><div class="v tone-amber">185.2%</div><div class="d">вывод / чистая прибыль</div></div>
+</div>
+<div class="section-title">Структура доходов и расходов</div>
+<div class="card donut-card">
+<div class="donut-row">
+<div class="donut-col"><div class="chart"><canvas id="cIncStruct"></canvas></div><div class="donut-cap">Доходы · 58 млн ₽</div></div>
+<div class="donut-col"><div class="chart"><canvas id="cExpStruct"></canvas></div><div class="donut-cap red">Расходы · 3.98 млрд ₽</div></div>
+</div>
+</div>
+<div class="row row-2">
+<div class="card"><h2>Доходы, расходы и чистая прибыль по месяцам</h2><div class="chart"><canvas id="cPnl"></canvas></div></div>
+<div class="card"><h2>Структура расходов по месяцам</h2><div class="chart"><canvas id="cExpMonth"></canvas></div></div>
+</div>
+</section>
+
+<section class="tab-pane" id="cashflow">
+<div class="row row-2">
+<div class="card"><h2>Чистая прибыль по месяцам</h2><div class="chart"><canvas id="cNet"></canvas></div></div>
+<div class="card"><h2>Движение денежных средств (ДДС)</h2><div class="chart"><canvas id="cDds"></canvas></div></div>
+</div>
+<div class="row row-2">
+<div class="card"><h2>Накопительная чистая прибыль + прогноз</h2><div class="chart"><canvas id="cCum"></canvas></div></div>
+<div class="card"><h2>Денежные потоки по видам деятельности</h2><div class="chart"><canvas id="cCF"></canvas></div></div>
+</div>
+</section>
+
+<section class="tab-pane" id="suppliers">
+<div class="card" style="margin-bottom:16px"><h2>Топ-10 поставщиков по кредиторской задолженности</h2><div class="chart" style="height:380px"><canvas id="cSup"></canvas></div></div>
+<div class="card"><h2>Расходы по месяцам — детально</h2><table><thead><tr><th>Статья расходов</th><th>Янв</th><th>Фев</th><th>Мар</th><th>Апр</th><th>Май</th><th>Июн</th><th>Июл</th><th>Авг</th><th>Сен</th><th>ИТОГО</th></tr></thead><tbody>
+<tr><td>Закупка товара (COGS)</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>192 494 560 ₽</td><td>711 523 773 ₽</td><td>831 189 340 ₽</td><td>883 941 520 ₽</td><td>594 249 279 ₽</td><td>81 475 700 ₽</td><td><b>3 294 874 172 ₽</b></td></tr>
+<tr><td>Вывод с баланса (клиенты)</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>24 698 281 ₽</td><td>98 259 929 ₽</td><td>139 741 184 ₽</td><td>147 045 032 ₽</td><td>175 000 519 ₽</td><td>64 211 271 ₽</td><td><b>648 956 216 ₽</b></td></tr>
+<tr><td>Вывод прибыли</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>2 250 746 ₽</td><td>8 149 486 ₽</td><td>9 126 881 ₽</td><td>9 871 393 ₽</td><td>7 402 416 ₽</td><td>1 085 850 ₽</td><td><b>37 886 772 ₽</b></td></tr>
+<tr class='tot'><td>ИТОГО РАСХОДЫ</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>219 443 587 ₽</td><td>817 933 188 ₽</td><td>980 057 405 ₽</td><td>1 040 857 945 ₽</td><td>776 652 214 ₽</td><td>146 772 821 ₽</td><td><b>3 981 717 160 ₽</b></td></tr>
+</tbody></table></div>
+</section>
+
+<section class="tab-pane" id="sales">
+<div class="grid kpis-secondary"><div class="kpi"><div class="l">Выручка (продажи)</div><div class="v tone-blue">332 826 195 ₽</div><div class="d">5043 записей</div></div>
+<div class="kpi"><div class="l">Закупка (COGS)</div><div class="v tone-red">330 893 450 ₽</div><div class="d">себестоимость товара</div></div>
+<div class="kpi"><div class="l">Валовая прибыль</div><div class="v tone-amber">1 932 745 ₽</div><div class="d">маржа 0.58%</div></div>
+<div class="kpi"><div class="l">Единиц товара</div><div class="v tone-slate">7 139</div><div class="d">93 клиентов · 901 SKU</div></div>
+<div class="kpi"><div class="l">Средний чек</div><div class="v tone-blue">46 621 ₽</div><div class="d">выручка / единицу</div></div>
+<div class="kpi"><div class="l">Чистая маржа</div><div class="v tone-green">1.24%</div><div class="d">прибыль / выручка</div></div>
+</div>
+<div class="sub" style="margin-bottom:16px">Источник: лист «Товарная» · период 2025-08-17 – 2025-09-03 · 5043 записей · 93 клиентов · 901 товаров</div>
+<div class="row row-2">
+<div class="card"><h2>Топ-10 клиентов по выручке</h2><div class="chart" style="height:340px"><canvas id="cClients"></canvas></div></div>
+<div class="card"><h2>Топ-10 товаров по выручке</h2><div class="chart" style="height:340px"><canvas id="cProducts"></canvas></div></div>
+</div>
+<div class="row row-2">
+<div class="card"><h2>Выручка по дням</h2><div class="chart"><canvas id="cDaily"></canvas></div></div>
+<div class="card"><h2>Выручка по странам</h2><div class="chart"><canvas id="cCountries"></canvas></div></div>
+</div>
+</section>
+
+<section class="tab-pane" id="detail">
+<div class="card" style="margin-bottom:16px"><h2>P&L по месяцам — детально</h2><table><thead><tr><th>Статья</th><th>Янв</th><th>Фев</th><th>Мар</th><th>Апр</th><th>Май</th><th>Июн</th><th>Июл</th><th>Авг</th><th>Сен</th><th>ИТОГО</th></tr></thead><tbody>
+<tr class=''><td>Выручка за услуги</td><td>2 681 261 ₽</td><td>2 933 040 ₽</td><td>3 490 849 ₽</td><td>4 255 687 ₽</td><td>4 802 786 ₽</td><td>5 692 471 ₽</td><td>6 155 043 ₽</td><td>4 591 306 ₽</td><td>574 900 ₽</td><td><b>35 177 343 ₽</b></td></tr>
+<tr class=''><td>  Основная услуга</td><td>2 210 050 ₽</td><td>2 317 800 ₽</td><td>2 789 140 ₽</td><td>3 537 010 ₽</td><td>4 044 300 ₽</td><td>4 901 250 ₽</td><td>5 272 930 ₽</td><td>3 781 200 ₽</td><td>486 600 ₽</td><td><b>29 340 280 ₽</b></td></tr>
+<tr class=''><td>  Логистика</td><td>463 511 ₽</td><td>615 240 ₽</td><td>701 009 ₽</td><td>710 277 ₽</td><td>737 186 ₽</td><td>789 721 ₽</td><td>882 113 ₽</td><td>810 106 ₽</td><td>88 300 ₽</td><td><b>5 797 463 ₽</b></td></tr>
+<tr class=''><td>  Гравировка</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>8 400 ₽</td><td>21 300 ₽</td><td>1 500 ₽</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td><b>31 200 ₽</b></td></tr>
+<tr class=''><td>  Пломбы</td><td>7 700 ₽</td><td>0 ₽</td><td>700 ₽</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td><b>8 400 ₽</b></td></tr>
+<tr class=''><td>Торг</td><td>0 ₽</td><td>3 200 ₽</td><td>22 600 ₽</td><td>5 900 ₽</td><td>7 000 ₽</td><td>3 200 ₽</td><td>0 ₽</td><td>0 ₽</td><td>1 500 ₽</td><td><b>43 400 ₽</b></td></tr>
+<tr class=''><td>Прибыль с продаж (маржа)</td><td>1 167 015 ₽</td><td>2 226 478 ₽</td><td>2 761 609 ₽</td><td>3 246 050 ₽</td><td>3 339 700 ₽</td><td>3 431 210 ₽</td><td>3 725 740 ₽</td><td>2 810 030 ₽</td><td>412 950 ₽</td><td><b>23 120 782 ₽</b></td></tr>
+<tr class='tot'><td>ИТОГО ДОХОДЫ</td><td>3 848 276 ₽</td><td>5 162 718 ₽</td><td>6 275 058 ₽</td><td>7 507 637 ₽</td><td>8 149 486 ₽</td><td>9 126 881 ₽</td><td>9 880 783 ₽</td><td>7 401 336 ₽</td><td>989 350 ₽</td><td><b>58 341 525 ₽</b></td></tr>
+<tr class=''><td>Вывод прибыли</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>2 250 746 ₽</td><td>8 149 486 ₽</td><td>9 126 881 ₽</td><td>9 871 393 ₽</td><td>7 402 416 ₽</td><td>1 085 850 ₽</td><td><b>37 886 772 ₽</b></td></tr>
+<tr class='tot'><td>ИТОГО РАСХОДЫ</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>2 250 746 ₽</td><td>8 149 486 ₽</td><td>9 126 881 ₽</td><td>9 871 393 ₽</td><td>7 402 416 ₽</td><td>1 085 850 ₽</td><td><b>37 886 772 ₽</b></td></tr>
+<tr class='net'><td>ЧИСТАЯ ПРИБЫЛЬ</td><td>3 848 276 ₽</td><td>5 162 718 ₽</td><td>6 275 058 ₽</td><td>5 256 891 ₽</td><td>0 ₽</td><td>0 ₽</td><td>9 390 ₽</td><td>-1 080 ₽</td><td>-96 500 ₽</td><td><b>20 454 753 ₽</b></td></tr>
+</tbody></table></div>
+<div class="card"><h2>Расходы по месяцам — детально</h2><table><thead><tr><th>Статья расходов</th><th>Янв</th><th>Фев</th><th>Мар</th><th>Апр</th><th>Май</th><th>Июн</th><th>Июл</th><th>Авг</th><th>Сен</th><th>ИТОГО</th></tr></thead><tbody>
+<tr><td>Закупка товара (COGS)</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>192 494 560 ₽</td><td>711 523 773 ₽</td><td>831 189 340 ₽</td><td>883 941 520 ₽</td><td>594 249 279 ₽</td><td>81 475 700 ₽</td><td><b>3 294 874 172 ₽</b></td></tr>
+<tr><td>Вывод с баланса (клиенты)</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>24 698 281 ₽</td><td>98 259 929 ₽</td><td>139 741 184 ₽</td><td>147 045 032 ₽</td><td>175 000 519 ₽</td><td>64 211 271 ₽</td><td><b>648 956 216 ₽</b></td></tr>
+<tr><td>Вывод прибыли</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>2 250 746 ₽</td><td>8 149 486 ₽</td><td>9 126 881 ₽</td><td>9 871 393 ₽</td><td>7 402 416 ₽</td><td>1 085 850 ₽</td><td><b>37 886 772 ₽</b></td></tr>
+<tr class='tot'><td>ИТОГО РАСХОДЫ</td><td>0 ₽</td><td>0 ₽</td><td>0 ₽</td><td>219 443 587 ₽</td><td>817 933 188 ₽</td><td>980 057 405 ₽</td><td>1 040 857 945 ₽</td><td>776 652 214 ₽</td><td>146 772 821 ₽</td><td><b>3 981 717 160 ₽</b></td></tr>
+</tbody></table></div>
+</section>
+
+<section class="tab-pane" id="insights">
+<div class="card">
+<h2>Ключевые выводы</h2>
+<div class="insights">
+<div class="row-item"><span class="ic">→</span><div><b>Валовый доход 58.3 млн ₽</b> за 9 месяцев: выручка за услуги (35.2 млн) + торговая маржа «прибыль с продаж» (23.1 млн). Операционные расходы (ЗП, офис, аренда) в ОПУ = 0 — учитываются отдельно.</div></div>
+<div class="row-item"><span class="ic">→</span><div><b>Чистая прибыль 20.45 млн ₽</b> (нетто-маржа 35%). Сформирована почти целиком в Jan–Apr; с мая прибыль полностью выводится, чистая ≈ 0.</div></div>
+<div class="row-item"><span class="ic">→</span><div><b>Run-rate прибыли 27.3 млн ₽/год.</b> Рост выручки MoM в Jan–Jul +8–34%, в Aug–Sep спад (−25%, −87%) — сезонность или завершение периода.</div></div>
+<div class="row-item"><span class="ic">→</span><div><b>Коэффициент вывода прибыли 185%</b> — изъято 37.9 млн при чистой 20.45 млн. Вывод превышает заработанную прибыль, что ведёт к отрицательному остатку ДС.</div></div>
+<div class="row-item"><span class="ic">→</span><div><b>Кредиторка поставщикам 6.98 млрд ₽</b> (596 поставщиков). Оборотный капитал −6.98 млрд: деньги на счетах (−2.89 млн) несопоставимы с долгами. Топ-10 поставщиков = 65.2% кредиторки.</div></div>
+<div class="row-item"><span class="ic">→</span><div><b>Продажи (Товарная, 17.08–03.09):</b> выручка 332.8 млн при закупке 330.9 млн — валовая маржа всего 0.58%. Прибыль формируется за счёт сервисных услуг, а не наценки на товар.</div></div>
+<div class="row-item"><span class="ic">→</span><div><b>Кассовый разрыв:</b> остаток ДС −2.89 млн ₽. Прибыль есть на бумаге, но деньги — в товарных остатках и клиентских балансах.</div></div>
+<div class="row-item"><span class="ic">→</span><div>Рекомендация: свести ОПУ с реальными оперрасходами (ФОТ, аренда, фулфилмент) и подтянуть дебиторку/товарные остатки — сейчас они не отражены, и истинная чистая прибыль может быть ниже.</div></div>
+</div></div>
+</section>
+
+<div class="foot">Сформировано из 1С-экспорта «RM GROUP - Бухгалтерия» · ОПУ месяц + ДДС месяц + ОПЕРАЦИИ + ОСВ Поставщики + Товарная · янв–сен 2025</div>
+<script>
+try{if(localStorage.getItem('pnl-theme')==='dark')document.body.classList.add('dark');}catch(e){}
+</script>
+<script>
+const D={"months": ["Янв", "Фев", "Мар", "Апр", "Май", "Июн", "Июл", "Авг", "Сен"], "kpi": {"dohod": 58341525.0, "raschod": 37886772.0, "net": 20454753.0, "usluga": 35177343.0, "osn_usluga": 29340280.0, "logistika_dohod": 5797463.0, "grav": 31200.0, "plomby": 8400.0, "torg": 43400.0, "pribyl_prodazh": 23120782.0, "vyvod_pribyli": 37886772.0, "cash_balance": -2894126.4, "dds_dohod": 3978404529.44, "dds_raschod": 3981720006.84, "zakupka": 3294874172.0, "snyatie_kart": 3978404529.44, "net_margin": 35.06}, "monthly": {"dohod": [3848276.0, 5162718.0, 6275058.0, 7507637.0, 8149486.0, 9126881.0, 9880783.0, 7401336.0, 989350.0], "raschod": [0.0, 0.0, 0.0, 2250746.0, 8149486.0, 9126881.0, 9871393.0, 7402416.0, 1085850.0], "net": [3848276.0, 5162718.0, 6275058.0, 5256891.0, 0.0, 0.0, 9390.0, -1080.0, -96500.0], "usluga": [2681261.0, 2933040.0, 3490849.0, 4255687.0, 4802786.0, 5692471.0, 6155043.0, 4591306.0, 574900.0], "pribyl_prodazh": [1167015.0, 2226478.0, 2761609.0, 3246050.0, 3339700.0, 3431210.0, 3725740.0, 2810030.0, 412950.0], "vyvod": [0.0, 0.0, 0.0, 2250746.0, 8149486.0, 9126881.0, 9871393.0, 7402416.0, 1085850.0]}, "income_struct": [{"name": "Основная услуга", "val": 29340280.0}, {"name": "Прибыль с продаж (маржа)", "val": 23120782.0}, {"name": "Логистика (доход)", "val": 5797463.0}, {"name": "Торг", "val": 43400.0}, {"name": "Гравировка", "val": 31200.0}, {"name": "Пломбы", "val": 8400.0}], "dds": {"dohod": [0.0, 0.0, 0.0, 219634987.0, 842371788.0, 965228154.44, 1045456775.0, 764964705.0, 140748120.0], "raschod": [0.0, 0.0, 0.0, 219443587.0, 817781188.0, 980209403.97, 1040857933.85, 776655074.01, 146772820.01], "saldo": [421351.0, 421351.0, 421351.0, 612751.0, 25203351.0, 10222101.47, 14820942.62, 3130573.61, -2894126.4], "zakupka": [0.0, 0.0, 0.0, 192494560.0, 711371773.0, 831341340.0, 883941520.0, 594249279.0, 81475700.0], "vyvod_bal": [0.0, 0.0, 0.0, 24698281.0, 98259929.0, 139741182.97, 147045020.85, 175003379.01, 64211270.01]}, "pl_table": [{"name": "Выручка за услуги", "total": 35177343.0, "monthly": [2681261.0, 2933040.0, 3490849.0, 4255687.0, 4802786.0, 5692471.0, 6155043.0, 4591306.0, 574900.0]}, {"name": "  Основная услуга", "total": 29340280.0, "monthly": [2210050.0, 2317800.0, 2789140.0, 3537010.0, 4044300.0, 4901250.0, 5272930.0, 3781200.0, 486600.0]}, {"name": "  Логистика", "total": 5797463.0, "monthly": [463511.0, 615240.0, 701009.0, 710277.0, 737186.0, 789721.0, 882113.0, 810106.0, 88300.0]}, {"name": "  Гравировка", "total": 31200.0, "monthly": [0.0, 0.0, 0.0, 8400.0, 21300.0, 1500.0, 0.0, 0.0, 0.0]}, {"name": "  Пломбы", "total": 8400.0, "monthly": [7700.0, 0.0, 700.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]}, {"name": "Торг", "total": 43400.0, "monthly": [0.0, 3200.0, 22600.0, 5900.0, 7000.0, 3200.0, 0.0, 0.0, 1500.0]}, {"name": "Прибыль с продаж (маржа)", "total": 23120782.0, "monthly": [1167015.0, 2226478.0, 2761609.0, 3246050.0, 3339700.0, 3431210.0, 3725740.0, 2810030.0, 412950.0]}, {"name": "ИТОГО ДОХОДЫ", "total": 58341525.0, "monthly": [3848276.0, 5162718.0, 6275058.0, 7507637.0, 8149486.0, 9126881.0, 9880783.0, 7401336.0, 989350.0]}, {"name": "Вывод прибыли", "total": 37886772.0, "monthly": [0.0, 0.0, 0.0, 2250746.0, 8149486.0, 9126881.0, 9871393.0, 7402416.0, 1085850.0]}, {"name": "ИТОГО РАСХОДЫ", "total": 37886772.0, "monthly": [0.0, 0.0, 0.0, 2250746.0, 8149486.0, 9126881.0, 9871393.0, 7402416.0, 1085850.0]}, {"name": "ЧИСТАЯ ПРИБЫЛЬ", "total": 20454753.0, "monthly": [3848276.0, 5162718.0, 6275058.0, 5256891.0, 0.0, 0.0, 9390.0, -1080.0, -96500.0]}], "expense_struct": [{"name": "Закупка товара (COGS)", "val": 3294874172}, {"name": "Вывод с баланса (клиенты)", "val": 648956216}, {"name": "Вывод прибыли", "val": 37886772}], "expense_monthly": {"zakupka": [0, 0, 0, 192494560.0, 711523773.0, 831189340.0, 883941520.0, 594249279.0, 81475700.0], "vyvod_bal": [0, 0, 0, 24698281.0, 98259929.0, 139741184.0, 147045032.0, 175000519.0, 64211271.0], "vyvod_prib": [0, 0, 0, 2250746.0, 8149486.0, 9126881.0, 9871393.0, 7402416.0, 1085850.0]}, "expense_total": 3981717160, "expense_table": [{"name": "Закупка товара (COGS)", "total": 3294874172, "monthly": [0, 0, 0, 192494560, 711523773, 831189340, 883941520, 594249279, 81475700]}, {"name": "Вывод с баланса (клиенты)", "total": 648956216, "monthly": [0, 0, 0, 24698281, 98259929, 139741184, 147045032, 175000519, 64211271]}, {"name": "Вывод прибыли", "total": 37886772, "monthly": [0, 0, 0, 2250746, 8149486, 9126881, 9871393, 7402416, 1085850]}], "expense_meta": {"operation_rows": 15087, "period_end": "05.09.2025"}, "balance": {"cash_balance": -2894126, "client_ds": 0, "ap_total": 6977497221, "ap_count": 596, "ap_top10_share": 65.2, "ap_top5": [{"name": "@ALBT77", "val": 900860150}, {"name": "@nikitaguzun", "val": 797806100}, {"name": "@vsteo", "val": 524546300}, {"name": "@twolok", "val": 506467350}, {"name": "@Parnasa1", "val": 453751400}], "ap_top10": [{"name": "@ALBT77", "val": 900860150}, {"name": "@nikitaguzun", "val": 797806100}, {"name": "@vsteo", "val": 524546300}, {"name": "@twolok", "val": 506467350}, {"name": "@Parnasa1", "val": 453751400}, {"name": "@meerlanski111", "val": 392225800}, {"name": "@zanosiev", "val": 344557600}, {"name": "АЛЕКСЕЙ ИСАКОВ (ПОСТАВЩИК)", "val": 237762510}, {"name": "@Alexnosen", "val": 203829100}, {"name": "@Mr_Heisenberg_big", "val": 186052300}], "working_capital": -6980391347}, "trends": {"mom_growth": [null, 34.2, 21.5, 19.6, 8.5, 12.0, 8.3, -25.1, -86.6], "cumulative_net": [3848276, 9010994, 15286052, 20542943, 20542943, 20542943, 20552333, 20551253, 20454753], "avg_monthly_rev": 6482392, "avg_monthly_net": 2272750, "avg_monthly_ras": 4209641, "months_active": 9, "run_rate_net": 27273004, "run_rate_rev": 77788700}, "ratios": {"net_margin": 35.06, "profit_withdrawal_ratio": 185.2, "top_income_share": 50.3, "top_income_name": "Основная услуга", "cash_to_ap": -0.04, "expense_to_revenue": 6824.8}, "cashflow": {"operating": [0, 0, 0, 217192841, 809783702, 970930524, 1030986552, 769249798, 145686971], "financing": [0, 0, 0, 2250746, 8149486, 9126881, 9871393, 7402416, 1085850], "operating_total": 3943830388, "financing_total": 37886772}, "sales": {"period": {"start": "2025-08-17", "end": "2025-09-03", "records": 5043}, "kpi": {"revenue": 332826195, "cogs": 330893450, "gross_profit": 1932745, "service_profit": 2210600, "net_profit": 4143345, "units": 7139, "gross_margin": 0.58, "net_margin": 1.24, "clients": 93, "suppliers": 100, "products": 901}, "months": [{"month": "2025-08", "rev": 260637795, "buy": 259207800, "prof": 1429995, "qty": 5555, "margin": 0.55}, {"month": "2025-09", "rev": 72188400, "buy": 71685650, "prof": 502750, "qty": 1584, "margin": 0.7}], "daily": [{"date": "2025-08-17", "rev": 7451620, "prof": 50170, "qty": 121}, {"date": "2025-08-18", "rev": 18766382, "prof": 95782, "qty": 368}, {"date": "2025-08-19", "rev": 19038250, "prof": 94650, "qty": 391}, {"date": "2025-08-20", "rev": 18266700, "prof": 99800, "qty": 509}, {"date": "2025-08-21", "rev": 21185790, "prof": 100590, "qty": 474}, {"date": "2025-08-22", "rev": 16037950, "prof": 82200, "qty": 369}, {"date": "2025-08-23", "rev": 20992360, "prof": 122460, "qty": 434}, {"date": "2025-08-24", "rev": 18416132, "prof": 118132, "qty": 309}, {"date": "2025-08-25", "rev": 22945210, "prof": 106010, "qty": 431}, {"date": "2025-08-26", "rev": 13648175, "prof": 86375, "qty": 357}, {"date": "2025-08-27", "rev": 18398550, "prof": 106550, "qty": 423}, {"date": "2025-08-28", "rev": 23971990, "prof": 111490, "qty": 518}, {"date": "2025-08-29", "rev": 13401126, "prof": 66026, "qty": 294}, {"date": "2025-08-30", "rev": 14339540, "prof": 95040, "qty": 290}, {"date": "2025-08-31", "rev": 13778020, "prof": 94720, "qty": 267}, {"date": "2025-09-01", "rev": 32760380, "prof": 263980, "qty": 685}, {"date": "2025-09-02", "rev": 23154320, "prof": 108670, "qty": 598}, {"date": "2025-09-03", "rev": 16273700, "prof": 130100, "qty": 301}], "clients": [{"name": "СМАРТбери (Калуга)", "rev": 38835500, "buy": 38657500, "prof": 178000, "qty": 713, "srv": 138200, "margin": 0.46}, {"name": "AppleHub (Луганск)", "rev": 33919500, "buy": 33744300, "prof": 175200, "qty": 574, "srv": 151700, "margin": 0.52}, {"name": "HiStore [Самара]", "rev": 27705928, "buy": 27413150, "prof": 292778, "qty": 706, "srv": 173800, "margin": 1.06}, {"name": "Pro Сервис [Сургут]", "rev": 17677968, "buy": 17497800, "prof": 180168, "qty": 354, "srv": 83800, "margin": 1.02}, {"name": "HiStore [Екатеринбург]", "rev": 16776899, "buy": 16625500, "prof": 151399, "qty": 407, "srv": 87100, "margin": 0.9}, {"name": "FlagmanShop (Пермь)", "rev": 15336500, "buy": 15256800, "prof": 79700, "qty": 382, "srv": 105300, "margin": 0.52}, {"name": "СмартБар (Рязань)", "rev": 14521200, "buy": 14479900, "prof": 41300, "qty": 231, "srv": 63700, "margin": 0.28}, {"name": "APPLE HOUSE (Норильск)", "rev": 14270700, "buy": 14221200, "prof": 49500, "qty": 246, "srv": 113300, "margin": 0.35}, {"name": "HiStore [Москва]", "rev": 13689500, "buy": 13613800, "prof": 75700, "qty": 312, "srv": 66000, "margin": 0.55}, {"name": "FS (Ижевск)", "rev": 11224400, "buy": 11185300, "prof": 39100, "qty": 252, "srv": 73500, "margin": 0.35}, {"name": "Яблочный Путь (Новосибирск)", "rev": 8514450, "buy": 8435800, "prof": 78650, "qty": 132, "srv": 117100, "margin": 0.92}, {"name": "iStore34 (Волгоград)", "rev": 8471700, "buy": 8411300, "prof": 60400, "qty": 132, "srv": 0, "margin": 0.71}, {"name": "NextPhone (Владикавказ)", "rev": 8047300, "buy": 8012600, "prof": 34700, "qty": 141, "srv": 37300, "margin": 0.43}, {"name": "GadgetStore (Кузнецк)", "rev": 7537700, "buy": 7501800, "prof": 35900, "qty": 138, "srv": 134700, "margin": 0.48}, {"name": "iPhone_Kyzyl (Кызыл)", "rev": 7142700, "buy": 7121900, "prof": 20800, "qty": 117, "srv": 58500, "margin": 0.29}, {"name": "СП-Компьютер [Екатеринбург]", "rev": 6493000, "buy": 6468200, "prof": 24800, "qty": 266, "srv": 72600, "margin": 0.38}, {"name": "White Store (Маркетплейс)", "rev": 6183350, "buy": 6128450, "prof": 54900, "qty": 432, "srv": 126900, "margin": 0.89}, {"name": "RM БАЛАНС", "rev": 5521400, "buy": 5521400, "prof": 0, "qty": 105, "srv": 0, "margin": 0.0}, {"name": "Device4U (Маркетплейс)", "rev": 5323800, "buy": 5289900, "prof": 33900, "qty": 84, "srv": 20600, "margin": 0.64}, {"name": "Xstore (Улан-Удэ)", "rev": 5232550, "buy": 5187200, "prof": 45350, "qty": 76, "srv": 103400, "margin": 0.87}], "suppliers": [{"name": "@nikitaguzun", "rev": 44765400, "buy": 44637000, "prof": 128400, "qty": 779, "srv": 272300, "margin": 0.29}, {"name": "@Co0kiePWNZ", "rev": 35231500, "buy": 35157800, "prof": 73700, "qty": 519, "srv": 216100, "margin": 0.21}, {"name": "@meerlanski111", "rev": 25819600, "buy": 25771000, "prof": 48600, "qty": 373, "srv": 143200, "margin": 0.19}, {"name": "@You_take_all", "rev": 18958000, "buy": 18937650, "prof": 20350, "qty": 504, "srv": 157200, "margin": 0.11}, {"name": "@Mr_Heisenberg_big", "rev": 15984300, "buy": 15942400, "prof": 41900, "qty": 226, "srv": 82700, "margin": 0.26}, {"name": "@greenmagg", "rev": 14727300, "buy": 14716500, "prof": 10800, "qty": 454, "srv": 135700, "margin": 0.07}, {"name": "@UNIMTRN_BOT (RMG)", "rev": 14683900, "buy": 14589600, "prof": 94300, "qty": 278, "srv": 92700, "margin": 0.64}, {"name": "@Lacoste_fff", "rev": 14134600, "buy": 13950200, "prof": 184400, "qty": 407, "srv": 109800, "margin": 1.3}, {"name": "@globalmarketopt", "rev": 13281500, "buy": 13251900, "prof": 29600, "qty": 166, "srv": 61200, "margin": 0.22}, {"name": "@Parnasa1", "rev": 12058100, "buy": 12047600, "prof": 10500, "qty": 171, "srv": 75000, "margin": 0.09}, {"name": "@twolok", "rev": 10864200, "buy": 10831500, "prof": 32700, "qty": 131, "srv": 63700, "margin": 0.3}, {"name": "@vsteo", "rev": 10522600, "buy": 10511900, "prof": 10700, "qty": 177, "srv": 59700, "margin": 0.1}, {"name": "@ALBT77", "rev": 10176100, "buy": 10169700, "prof": 6400, "qty": 128, "srv": 48300, "margin": 0.06}, {"name": "@Apple76", "rev": 9363300, "buy": 9340300, "prof": 23000, "qty": 139, "srv": 46500, "margin": 0.25}, {"name": "@pacman0105", "rev": 8933100, "buy": 8798300, "prof": 134800, "qty": 199, "srv": 58400, "margin": 1.51}, {"name": "@lanayaworki", "rev": 6810200, "buy": 6799900, "prof": 10300, "qty": 148, "srv": 45300, "margin": 0.15}, {"name": "@SmaartOpt", "rev": 5183400, "buy": 5178200, "prof": 5200, "qty": 185, "srv": 58800, "margin": 0.1}, {"name": "@meerlanski111 (iStore34)", "rev": 4733800, "buy": 4733800, "prof": 0, "qty": 72, "srv": 0, "margin": 0.0}, {"name": "RM БАЛАНС (ПОСТАВЩИК)", "rev": 4049300, "buy": 3881650, "prof": 167650, "qty": 90, "srv": 24600, "margin": 4.14}, {"name": "@tonytonit", "rev": 4006700, "buy": 4000500, "prof": 6200, "qty": 42, "srv": 20400, "margin": 0.15}], "products": [{"name": "16 Pro Max 256 Desert", "rev": 16379400, "buy": 16355400, "prof": 24000, "qty": 170, "margin": 0.15}, {"name": "16 Pro Max 256 Black", "rev": 13270800, "buy": 13253800, "prof": 17000, "qty": 137, "margin": 0.13}, {"name": "16 Pro Max 256 Natural", "rev": 12605600, "buy": 12571600, "prof": 34000, "qty": 129, "margin": 0.27}, {"name": "16 Pro 256 Desert", "rev": 10354600, "buy": 10336100, "prof": 18500, "qty": 113, "margin": 0.18}, {"name": "16 Pro 256 Black", "rev": 9578800, "buy": 9579600, "prof": -800, "qty": 104, "margin": -0.01}, {"name": "16 Pro 256 Natural", "rev": 8203700, "buy": 8190800, "prof": 12900, "qty": 88, "margin": 0.16}, {"name": "16 128 Black", "rev": 7507300, "buy": 7483000, "prof": 24300, "qty": 135, "margin": 0.32}, {"name": "16 Pro Max 256 White", "rev": 7082200, "buy": 7064700, "prof": 17500, "qty": 74, "margin": 0.25}, {"name": "16 Pro Max 512 Desert", "rev": 5840800, "buy": 5834600, "prof": 6200, "qty": 52, "margin": 0.11}, {"name": "16 256 Black", "rev": 5797300, "buy": 5780300, "prof": 17000, "qty": 89, "margin": 0.29}, {"name": "16 Pro 128 Black", "rev": 5285900, "buy": 5276700, "prof": 9200, "qty": 67, "margin": 0.17}, {"name": "16 Pro 128 Desert", "rev": 5248600, "buy": 5240000, "prof": 8600, "qty": 67, "margin": 0.16}, {"name": "16 Pro Max 512 Black", "rev": 5154100, "buy": 5146900, "prof": 7200, "qty": 46, "margin": 0.14}, {"name": "16 256 White", "rev": 4979700, "buy": 4974600, "prof": 5100, "qty": 74, "margin": 0.1}, {"name": "13 128 Midnight", "rev": 4949000, "buy": 4934500, "prof": 14500, "qty": 138, "margin": 0.29}, {"name": "15 128 Black", "rev": 4519600, "buy": 4505800, "prof": 13800, "qty": 88, "margin": 0.31}, {"name": "13 128 Starlight", "rev": 4101100, "buy": 4090900, "prof": 10200, "qty": 112, "margin": 0.25}, {"name": "S25 Ultra 12/256 Black", "rev": 3849700, "buy": 3842600, "prof": 7100, "qty": 55, "margin": 0.18}, {"name": "16 128 White", "rev": 3650900, "buy": 3644300, "prof": 6600, "qty": 64, "margin": 0.18}, {"name": "AirPods Pro 2 Type-C", "rev": 3348800, "buy": 3324600, "prof": 24200, "qty": 234, "margin": 0.72}, {"name": "16 Pro 128 Natural", "rev": 3231500, "buy": 3228700, "prof": 2800, "qty": 42, "margin": 0.09}, {"name": "16 Pro Max 512 Natural", "rev": 3195600, "buy": 3193500, "prof": 2100, "qty": 28, "margin": 0.07}, {"name": "15 128 Blue", "rev": 3174100, "buy": 3169800, "prof": 4300, "qty": 63, "margin": 0.14}, {"name": "16 Pro 256 White", "rev": 3043800, "buy": 3040200, "prof": 3600, "qty": 32, "margin": 0.12}, {"name": "S25 Ultra 12/512 Black", "rev": 2915700, "buy": 2902300, "prof": 13400, "qty": 36, "margin": 0.46}], "countries": [{"name": "🇪🇺", "rev": 243927100, "buy": 243278700, "prof": 648400, "qty": 4396, "margin": 0.27}, {"name": "🇺🇸", "rev": 53649150, "buy": 52999950, "prof": 649200, "qty": 1738, "margin": 1.21}, {"name": "🇨🇳", "rev": 31906600, "buy": 31829500, "prof": 77100, "qty": 455, "margin": 0.24}, {"name": "🇷🇺", "rev": 2882900, "buy": 2785300, "prof": 97600, "qty": 304, "margin": 3.39}, {"name": "—", "rev": 460445, "buy": 0, "prof": 460445, "qty": 246, "margin": 100.0}]}};
+const fmt=n=>new Intl.NumberFormat('ru-RU').format(Math.round(n));
+const isDark=document.body.classList.contains('dark');
+const C={blue:'#2563eb',green:'#16a34a',red:'#dc2626',amber:'#f59e0b',purple:'#7c3aed',cyan:'#0891b2',slate:'#64748b'};
+const TXT=isDark?'#e6edf3':'#0f172a',TICK=isDark?'#8b98a5':'#64748b',GRID=isDark?'#26303f':'#eef2f7';
+const baseScales={x:{grid:{display:false},border:{display:false},ticks:{color:TICK,font:{size:11}}},y:{grid:{color:GRID},border:{display:false},ticks:{color:TICK,font:{size:11}}}};
+const legBot={position:'bottom',labels:{color:TICK,boxWidth:10,boxHeight:10,usePointStyle:true,pointStyle:'circle',padding:14,font:{size:11,weight:'600'}}};
+const tooltip={backgroundColor:isDark?'#0f172a':'#0f172a',titleColor:'#fff',bodyColor:'#cbd5e1',padding:12,cornerRadius:10,displayColors:true,boxPadding:4};
+const charts=[];
+function mk(ctx,cfg){const ch=new Chart(ctx,cfg);charts.push(ch);return ch;}
+
+mk(cPnl,{type:'bar',data:{labels:D.months,datasets:[
+ {label:'Доходы',data:D.monthly.dohod,backgroundColor:C.blue,borderRadius:6,maxBarThickness:34},
+ {label:'Расходы (вывод)',data:D.monthly.raschod,backgroundColor:C.red,borderRadius:6,maxBarThickness:34},
+ {label:'Чистая прибыль',data:D.monthly.net,type:'line',borderColor:C.green,backgroundColor:'rgba(22,163,74,.12)',fill:true,tension:.35,borderWidth:3,pointRadius:3,pointBackgroundColor:C.green,yAxisID:'y'}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:legBot,tooltip},scales:{...baseScales,y:{...baseScales.y,ticks:{...baseScales.y.ticks,callback:v=>fmt(v)}}}}});
+
+const centerText={id:'centerText',afterDraw(chart){const {ctx}=chart;const m=chart.getDatasetMeta(0);if(!m||!m.data||!m.data.length)return;const {x,y}=m.data[0].getProps(['x','y'],true);const opt=chart.options.plugins.centerText;if(!opt)return;ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillStyle=opt.color||TXT;ctx.font='700 19px Inter,system-ui,sans-serif';ctx.fillText(opt.line1||'',x,y-9);ctx.fillStyle=TICK;ctx.font='600 10px Inter,system-ui,sans-serif';ctx.fillText(opt.line2||'',x,y+13);ctx.restore();}};
+Chart.register(centerText);
+
+mk(cIncStruct,{type:'doughnut',data:{labels:['Основная услуга','Прибыль с продаж','Логистика','Торг','Гравировка','Пломбы'],datasets:[{data:D.income_struct.map(i=>i.val),backgroundColor:[C.blue,C.purple,C.amber,C.green,C.red,C.cyan],borderColor:isDark?'#1a2230':'#ffffff',borderWidth:3,hoverOffset:6}]},
+ options:{responsive:true,maintainAspectRatio:false,cutout:'66%',plugins:{centerText:{line1:fmt(D.kpi.dohod)+' ₽',line2:'ДОХОДЫ',color:C.blue},legend:legBot,tooltip:{...tooltip,callbacks:{label:c=>c.label+': '+fmt(c.raw)+' ₽'}}}}});
+mk(cNet,{type:'line',data:{labels:D.months,datasets:[{label:'Чистая прибыль',data:D.monthly.net,borderColor:C.green,backgroundColor:'rgba(22,163,74,.12)',fill:true,tension:.35,borderWidth:3,pointRadius:4,pointBackgroundColor:C.green}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip},scales:baseScales}});
+mk(cDds,{type:'bar',data:{labels:D.months,datasets:[
+ {label:'Поступления',data:D.dds.dohod,backgroundColor:C.blue,borderRadius:6,maxBarThickness:34,yAxisID:'y'},
+ {label:'Расходы',data:D.dds.raschod,backgroundColor:C.red,borderRadius:6,maxBarThickness:34,yAxisID:'y'},
+ {label:'Остаток ДС',data:D.dds.saldo,type:'line',borderColor:C.amber,borderWidth:3,tension:.35,pointRadius:4,pointBackgroundColor:C.amber,yAxisID:'y1'}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:legBot,tooltip},scales:{x:baseScales.x,y:{position:'left',grid:{color:GRID},border:{display:false},ticks:{color:TICK,font:{size:11},callback:v=>Math.abs(v)>=1e6?(v/1e6).toFixed(0)+'М':fmt(v)}},y1:{position:'right',grid:{display:false},border:{display:false},ticks:{color:C.amber,font:{size:11},callback:v=>Math.abs(v)>=1e6?(v/1e6).toFixed(1)+'М':fmt(v)}}}}});
+
+if(D.expense_struct){
+mk(cExpStruct,{type:'doughnut',data:{labels:['Закупка товара','Вывод с баланса','Вывод прибыли'],datasets:[{data:D.expense_struct.map(i=>i.val),backgroundColor:[C.red,C.blue,C.amber],borderColor:isDark?'#1a2230':'#ffffff',borderWidth:3,hoverOffset:6}]},
+ options:{responsive:true,maintainAspectRatio:false,cutout:'66%',plugins:{centerText:{line1:(D.expense_total/1e9).toFixed(2)+' млрд',line2:'РАСХОДЫ',color:C.red},legend:legBot,tooltip:{...tooltip,callbacks:{label:c=>c.label+': '+fmt(c.raw)+' ₽'}}}}});
+mk(cExpMonth,{type:'bar',data:{labels:D.months,datasets:[
+ {label:'Закупка товара',data:D.expense_monthly.zakupka,backgroundColor:C.red,stack:'s',borderRadius:4},
+ {label:'Вывод с баланса',data:D.expense_monthly.vyvod_bal,backgroundColor:C.blue,stack:'s',borderRadius:4},
+ {label:'Вывод прибыли',data:D.expense_monthly.vyvod_prib,backgroundColor:C.amber,stack:'s',borderRadius:4}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:legBot,tooltip},scales:{x:{...baseScales.x,stacked:true},y:{...baseScales.y,stacked:true,ticks:{...baseScales.y.ticks,callback:v=>v>=1e6?(v/1e6).toFixed(0)+'М':fmt(v)}}}}});
+}
+
+if(D.trends){
+// forecast: extend cumulative with 3 projected months at avg net
+const avgNet=D.trends.cumulative_net[D.trends.cumulative_net.length-1]/D.months.length;
+let proj=D.trends.cumulative_net.slice();
+const ext=['Окт','Ноя','Дек'];let last=proj[proj.length-1];
+const fcast=[null,null,null,null,null,null,null,null,null];
+const labelsF=D.months.concat(ext);
+for(let i=0;i<3;i++){last+=avgNet;proj.push(Math.round(last));fcast.push(Math.round(last));}
+const cumActual=proj.map((v,i)=>i<9?v:null);
+mk(cCum,{type:'bar',data:{labels:labelsF,datasets:[
+ {label:'Чистая прибыль (мес.)',data:D.monthly.net.concat([null,null,null]),backgroundColor:C.green,borderRadius:6,maxBarThickness:30,yAxisID:'y'},
+ {label:'Накопит. факт',data:cumActual,type:'line',borderColor:C.blue,backgroundColor:'rgba(37,99,235,.1)',fill:false,tension:.35,borderWidth:3,pointRadius:4,pointBackgroundColor:C.blue,yAxisID:'y1'},
+ {label:'Прогноз',data:fcast.map(v=>v),type:'line',borderColor:C.amber,borderDash:[6,5],fill:false,tension:.35,borderWidth:2,pointRadius:3,pointBackgroundColor:C.amber,yAxisID:'y1'}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:legBot,tooltip},scales:{x:baseScales.x,y:{position:'left',grid:{color:GRID},border:{display:false},ticks:{color:TICK,font:{size:11},callback:v=>fmt(v)}},y1:{position:'right',grid:{display:false},border:{display:false},ticks:{color:C.blue,font:{size:11},callback:v=>fmt(v)}}}}});
+mk(cCF,{type:'bar',data:{labels:D.months,datasets:[
+ {label:'Операционный поток',data:D.cashflow.operating,backgroundColor:C.red,borderRadius:6,maxBarThickness:34},
+ {label:'Финансовый (вывод прибыли)',data:D.cashflow.financing,backgroundColor:C.amber,borderRadius:6,maxBarThickness:34}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:legBot,tooltip},scales:baseScales}});
+if(D.balance&&D.balance.ap_top10){
+const sup=D.balance.ap_top10;
+mk(cSup,{type:'bar',data:{labels:sup.map((s,i)=>'Поставщик '+(i+1)),datasets:[{label:'Кредиторка',data:sup.map(s=>s.val),backgroundColor:C.purple,borderRadius:5,maxBarThickness:22}]},
+ options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltip,callbacks:{label:c=>'Кредиторка: '+fmt(c.raw)+' ₽'}}},scales:{x:{grid:{color:GRID},border:{display:false},ticks:{color:TICK,font:{size:11},callback:v=>v>=1e6?(v/1e6).toFixed(0)+'М':fmt(v)}},y:{grid:{display:false},border:{display:false},ticks:{color:TICK,font:{size:11}}}}}});
+}
+}
+
+// Sales charts
+if(D.sales){
+const s=D.sales;
+mk(cClients,{type:'bar',data:{labels:s.clients.slice(0,10).map(c=>c.name.replace(/\s*\(.*\)/,'').slice(0,18)),datasets:[{label:'Выручка',data:s.clients.slice(0,10).map(c=>c.rev),backgroundColor:C.blue,borderRadius:5,maxBarThickness:24}]},
+ options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltip,callbacks:{label:c=>'Выручка: '+fmt(c.raw)+' ₽'}}},scales:{x:{grid:{color:GRID},border:{display:false},ticks:{color:TICK,font:{size:11},callback:v=>v>=1e6?(v/1e6).toFixed(0)+'М':fmt(v)}},y:{grid:{display:false},border:{display:false},ticks:{color:TICK,font:{size:11}}}}}});
+mk(cProducts,{type:'bar',data:{labels:s.products.slice(0,10).map(p=>p.name.slice(0,20)),datasets:[{label:'Выручка',data:s.products.slice(0,10).map(p=>p.rev),backgroundColor:C.purple,borderRadius:5,maxBarThickness:24}]},
+ options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{...tooltip,callbacks:{label:c=>'Выручка: '+fmt(c.raw)+' ₽'}}},scales:{x:{grid:{color:GRID},border:{display:false},ticks:{color:TICK,font:{size:11},callback:v=>v>=1e6?(v/1e6).toFixed(0)+'М':fmt(v)}},y:{grid:{display:false},border:{display:false},ticks:{color:TICK,font:{size:11}}}}}});
+mk(cDaily,{type:'line',data:{labels:s.daily.map(d=>d.date.slice(5)),datasets:[{label:'Выручка',data:s.daily.map(d=>d.rev),borderColor:C.blue,backgroundColor:'rgba(37,99,235,.12)',fill:true,tension:.35,borderWidth:3,pointRadius:3,pointBackgroundColor:C.blue}]},
+ options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip},scales:baseScales}});
+mk(cCountries,{type:'doughnut',data:{labels:s.countries.map(c=>c.name),datasets:[{data:s.countries.map(c=>c.rev),backgroundColor:[C.blue,C.purple,C.green,C.amber,C.slate],borderColor:isDark?'#1a2230':'#ffffff',borderWidth:3}]},
+ options:{responsive:true,maintainAspectRatio:false,cutout:'60%',plugins:{legend:legBot,tooltip:{...tooltip,callbacks:{label:c=>c.label+': '+fmt(c.raw)+' ₽'}}}}});
+}
+
+// Tabs
+const tabs=document.querySelectorAll('.tab');
+const panes=document.querySelectorAll('.tab-pane');
+function showTab(id){
+panes.forEach(p=>p.classList.toggle('active',p.id===id));
+tabs.forEach(t=>t.classList.toggle('active',t.dataset.tab===id));
+setTimeout(()=>charts.forEach(c=>{try{c.resize();}catch(e){}}),60);
+}
+tabs.forEach(t=>t.addEventListener('click',()=>showTab(t.dataset.tab)));
+// initial resize for visible
+setTimeout(()=>charts.forEach(c=>{try{c.resize();}catch(e){}}),120);
+
+// Theme toggle
+const tb=document.getElementById('themeToggle');
+function setTheme(dark){document.body.classList.toggle('dark',dark);tb.textContent=dark?'☀ Светлая':'🌙 Тёмная';localStorage.setItem('pnl-theme',dark?'dark':'light');}
+tb.addEventListener('click',()=>setTheme(!document.body.classList.contains('dark')));
+// Print
+document.getElementById('printBtn').addEventListener('click',()=>window.print());
+</script></body></html>
