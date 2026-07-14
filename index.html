@@ -74,8 +74,9 @@ tr.tot{font-weight:700;background:var(--surface-soft)}
 tr.net td{color:var(--green);font-weight:700}
 tbody tr:hover{background:var(--surface-soft)}
 .insights{font-size:14px;line-height:1.85;color:var(--muted)}.insights b{color:var(--text)}
-#prodTable{border-collapse:collapse;width:100%}
-#prodTable th{cursor:pointer;user-select:none;white-space:nowrap}
+#prodTable{border-collapse:collapse;width:100%;min-width:720px;display:table}
+#prodTable th{cursor:pointer;user-select:none;white-space:nowrap;position:sticky;top:0;background:var(--surface);z-index:2}
+#prodTable thead{box-shadow:inset 0 -1px 0 var(--border)}
 #prodTable th:hover{color:var(--text)}
 #prodTable td.r,#prodTable th.r{text-align:right;white-space:nowrap}
 #prodTable td{padding:8px 10px;border-bottom:1px solid var(--border);font-size:12.5px}
@@ -234,7 +235,7 @@ tbody tr:hover{background:var(--surface-soft)}
 <input id="prodSearch" type="text" placeholder="Поиск товара…" style="padding:8px 14px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-size:12px;width:200px">
 </div>
 </div>
-<div style="overflow-x:auto"><table id="prodTable"><thead><tr>
+<div style="overflow:auto;max-height:560px"><table id="prodTable"><thead><tr>
 <th data-k="name">Товар ↕</th><th data-k="brand">Бренд ↕</th><th data-k="category">Категория ↕</th><th data-k="qty" class="r">Кол-во ↕</th><th data-k="rev" class="r">Выручка ↕</th><th data-k="buy" class="r">Закупка ↕</th><th data-k="prof" class="r">Прибыль ↕</th><th data-k="margin" class="r">Маржа ↕</th>
 </tr></thead><tbody id="prodBody"></tbody></table></div>
 <div id="prodCount" class="sub" style="margin-top:10px"></div>
