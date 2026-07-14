@@ -75,6 +75,36 @@ tbody tr:hover{background:var(--surface-soft)}
 .insights{font-size:14px;line-height:1.85;color:var(--muted)}.insights b{color:var(--text)}
 .insights .row-item{display:flex;gap:11px;padding:7px 0}.insights .row-item .ic{color:var(--blue);font-weight:700;margin-top:1px}
 .foot{color:var(--muted-2);font-size:11.5px;margin-top:32px;text-align:center}
+/* Mobile */
+@media(max-width:640px){
+  body{padding:18px 14px 40px}
+  .hero{flex-direction:column;align-items:flex-start;gap:12px;margin-bottom:16px}
+  .hero h1{font-size:23px}
+  .hero .sub{font-size:12.5px}
+  .hright{gap:7px;width:100%;flex-wrap:wrap}
+  .hright .pill,.hright .btn{padding:6px 11px;font-size:11px}
+  .tabs{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;margin-bottom:14px;gap:2px}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{padding:9px 12px;font-size:13px;white-space:nowrap;flex-shrink:0}
+  .grid{gap:10px}
+  .kpis-primary,.kpis-secondary,.exp-kpis{gap:10px;margin-bottom:12px}
+  .kpi{padding:14px}
+  .kpi .v{font-size:20px;margin:5px 0 3px;word-break:break-word;hyphens:auto}
+  .kpis-primary .kpi .v{font-size:22px}
+  .kpi .l{font-size:10px}
+  .kpi .d{font-size:11px;line-height:1.4}
+  .row{gap:10px;margin-bottom:12px}
+  .card{padding:16px;border-radius:16px}
+  .card h2{font-size:13.5px;margin-bottom:12px}
+  .chart{height:260px}
+  .donut-col .chart{height:260px;width:260px}
+  .section-title{font-size:15px;margin:2px 0 10px}
+  .donut-cap{font-size:12px}
+  table{font-size:11px;display:block;overflow-x:auto;-webkit-overflow-scrolling:touch;white-space:nowrap}
+  th{font-size:9.5px}
+  .insights{font-size:13px;line-height:1.7}
+  .foot{font-size:10.5px;margin-top:22px}
+}
 @media print{.tabs,.hright .btn,.hright .pill{display:none}.tab-pane{display:block!important}.card{box-shadow:none;break-inside:avoid}body{padding:0;max-width:none}}
 </style></head><body>
 <div class="hero">
@@ -109,10 +139,10 @@ tbody tr:hover{background:var(--surface-soft)}
 <div class="kpi"><div class="ktop"><div class="l">Остаток ДС</div><span class="trend down">▼ -192%</span></div><div class="v tone-red">-2 894 126 ₽</div><div class="d">сальдо на конец</div><svg class="spark" viewBox="0 0 100 28" preserveAspectRatio="none"><polyline points="0.0,23.2 12.5,23.2 25.0,23.2 37.5,23.0 50.0,2.0 62.5,14.8 75.0,10.9 87.5,20.9 100.0,26.0" fill="none" stroke="#dc2626" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></svg></div>
 </div>
 <div class="section-title">Расходы</div>
-<div class="grid kpis-secondary exp-kpis"><div class="kpi primary"><div class="l">Расходы всего</div><div class="v tone-red">3 981 717 160 ₽</div><div class="d">за янв–сен 2025</div></div>
-<div class="kpi"><div class="l">Закупка товара</div><div class="v tone-blue">3 294 874 172 ₽</div><div class="d">82.8% расходов</div></div>
-<div class="kpi"><div class="l">Вывод с баланса</div><div class="v tone-blue">648 956 216 ₽</div><div class="d">16.3% расходов</div></div>
-<div class="kpi"><div class="l">Вывод прибыли</div><div class="v tone-blue">37 886 772 ₽</div><div class="d">1.0% расходов</div></div>
+<div class="grid kpis-secondary exp-kpis"><div class="kpi primary"><div class="l">Расходы всего</div><div class="v tone-red">3,98 млрд ₽</div><div class="d">за янв–сен 2025</div></div>
+<div class="kpi"><div class="l">Закупка товара</div><div class="v tone-blue">3,29 млрд ₽</div><div class="d">82.8% расходов</div></div>
+<div class="kpi"><div class="l">Вывод с баланса</div><div class="v tone-blue">649 млн ₽</div><div class="d">16.3% расходов</div></div>
+<div class="kpi"><div class="l">Вывод прибыли</div><div class="v tone-blue">37,9 млн ₽</div><div class="d">1.0% расходов</div></div>
 </div>
 <div class="section-title">Финансовое здоровье</div>
 <div class="grid kpis-secondary"><div class="kpi"><div class="l">Кредиторка поставщикам</div><div class="v tone-red">6.98 млрд ₽</div><div class="d">596 поставщиков · топ-10 = 65.2%</div></div>
